@@ -1,12 +1,10 @@
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JButton;
+import javax.swing.*;
 import java.awt.*;
 
 public class ViewLayer extends JFrame {
    
    public static void main(String[] args) {
-      JFrame contentPane = new JFrame("FrameDemo");
+      /*JFrame contentPane = new JFrame("DBMSGUI");
       //Sets up grid for buttons
       contentPane.setLayout(new GridLayout(1, 2));
       JButton button1 = new JButton("Check Out Order");
@@ -22,6 +20,48 @@ public class ViewLayer extends JFrame {
       //Adjusts settings for JFrame
       contentPane.pack();
       contentPane.setVisible(true);
+      contentPane.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);*/
+      
+      JFrame contentPane = new JFrame("DBMSGUI");
+      contentPane.setLayout(new GridLayout(8, 2));
+      //Instantiating all form elements
+      JLabel productName = new JLabel("Product Name");
+      JTextField nameField = new JTextField();
+      JLabel productID = new JLabel("Product ID");
+      JTextField idField = new JTextField();
+      JLabel quantity = new JLabel("Quantity");
+      JTextField quantityField = new JTextField();
+      JLabel price = new JLabel("Price");
+      JTextField priceField = new JTextField();
+      JLabel taxRate = new JLabel("Tax Rate");
+      JTextField taxField = new JTextField();
+      JLabel expirationDate = new JLabel("Expiration Date");
+      JTextField expirationField = new JTextField();
+      JLabel supplier = new JLabel("Supplier");
+      JTextField supplierField = new JTextField();
+      JLabel unit = new JLabel("Unit");
+      JTextField unitField = new JTextField();
+      JButton saveButton = new JButton("Save");
+      //Adds all form elements to GUI
+      contentPane.add(productName);
+      contentPane.add(nameField);
+      contentPane.add(productID);
+      contentPane.add(idField);
+      contentPane.add(quantity);
+      contentPane.add(quantityField);
+      contentPane.add(price);
+      contentPane.add(priceField);
+      contentPane.add(taxRate);
+      contentPane.add(taxField);
+      contentPane.add(expirationDate);
+      contentPane.add(expirationField);
+      contentPane.add(supplier);
+      contentPane.add(supplierField);
+      contentPane.add(unit);
+      contentPane.add(unitField);
+      //Adjusts settings for JFrame
+      contentPane.pack();
+      contentPane.setVisible(true);
       contentPane.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
    }
    
@@ -29,6 +69,9 @@ public class ViewLayer extends JFrame {
    }
    
    public class Form {
+   
+      public Form() {
+      }
    }
    
    public class Image {
