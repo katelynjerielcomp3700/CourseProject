@@ -23,7 +23,7 @@ public class ViewLayer extends JFrame {
       contentPane.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);*/
       
       JFrame contentPane = new JFrame("DBMSGUI");
-      contentPane.setLayout(new GridLayout(8, 2));
+      contentPane.setLayout(new GridLayout(8, 2, 5, 5));
       //Instantiating all form elements
       JLabel productName = new JLabel("Product Name");
       JTextField nameField = new JTextField();
@@ -60,7 +60,7 @@ public class ViewLayer extends JFrame {
       contentPane.add(unit);
       contentPane.add(unitField);
       //Adjusts settings for JFrame
-      contentPane.pack();
+      contentPane.setSize(800, 700);
       contentPane.setVisible(true);
       contentPane.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
    }
@@ -81,6 +81,10 @@ public class ViewLayer extends JFrame {
    }
    
    public class TableView {
+   
+      public void populateTable()
+      {
+      }
    }
 }
 
