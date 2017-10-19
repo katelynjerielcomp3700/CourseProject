@@ -114,7 +114,7 @@ public class DataAdapter {
                 statement.setInt(8, product.getID());
             }
             else { // this product does not exist, use insert into
-                statement = connection.prepareStatement("INSERT INTO Product VALUES (?, ?, ?, ?, ?, ?, ?)");
+                statement = connection.prepareStatement("INSERT INTO Product VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
                 statement.setInt(1, product.getID());
                 statement.setString(2, product.getName());
                 statement.setDouble(3, product.getPrice());
