@@ -1,6 +1,9 @@
 import javax.swing.*;
 
 public class ReportsView extends JFrame{
+    private JButton btnProduct = new JButton("View Product Report");
+    private JButton btnOrder = new JButton("View Order Report");
+    
     private JLabel startDate = new JLabel("Start Date: ");
     private JLabel endDate = new JLabel("End Date: ");
     private JTextField txtStartDate = new JTextField(10);

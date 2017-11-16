@@ -5,11 +5,13 @@ import java.text.DecimalFormat;
 
 public class DataAdapter {
     private Connection connection;
+    private Application app;
     private DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     DecimalFormat df = new DecimalFormat("#.00"); 
 
-    public DataAdapter(Connection connection) {
+    public DataAdapter(Connection connection, Application app) {
         this.connection = connection;
+        this.app = app;
     }
     
     public String getProductName(int id) {
@@ -279,14 +281,18 @@ public class DataAdapter {
     }
     
     public void changePass(String oldPassword, String newPassword) {
+        User currentUser = app.getCurrentUser();
+        int userID = currentUser.getUserID();
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT * FROM User WHERE Password = ?");
-            statement.setString(1, oldPassword);
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM User WHERE UserID = ? AND Password = ?");
+            statement.setInt(1, userID);
+            statement.setString(2, oldPassword);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                statement = connection.prepareStatement("UPDATE User SET Password = ? WHERE Password = ?");
+                statement = connection.prepareStatement("UPDATE User SET Password = ? WHERE UserID = ? AND Password = ?");
                 statement.setString(1, newPassword);
-                statement.setString(2, oldPassword);
+                statement.setInt(2, userID);
+                statement.setString(3, oldPassword);
                 statement.execute();
                 resultSet.close();
                 statement.close();

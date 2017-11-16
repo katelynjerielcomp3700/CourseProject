@@ -47,7 +47,7 @@ public class Application {
         }
 
         //Creates data adapter
-        dataAdapter = new DataAdapter(connection);
+        dataAdapter = new DataAdapter(connection, this);
 
         //Creates the various View classes
         mainScreen = new MainScreen();
@@ -123,6 +123,10 @@ public class Application {
     //Data Access Layer
     public DataAdapter getDataAdapter() {
         return dataAdapter;
+    }
+    
+    public User getCurrentUser() {
+        return currentUser;
     }
     
     public void setCurrentUser(User user) {
