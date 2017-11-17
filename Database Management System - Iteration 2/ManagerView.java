@@ -17,7 +17,7 @@ public class ManagerView extends JFrame {
         btnReports.setPreferredSize(new Dimension(160, 60));
 
         //Sets title information for the content pane
-        JLabel title = new JLabel("Update User Profile");
+        JLabel title = new JLabel("Manager Features");
         title.setFont(new Font("Sans Serif", Font.BOLD, 24));
         JPanel panelTitle = new JPanel();
         panelTitle.add(title);

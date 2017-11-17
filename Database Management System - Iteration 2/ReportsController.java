@@ -26,24 +26,24 @@ public class ReportsController implements ActionListener {
         }
         else if (e.getSource() == reportsView.getBtnSortDate())
         {
-            /*String startDate = reportsView.getTxtStartDate().getText().trim();
+            String startDate = reportsView.getTxtStartDate().getText().trim();
             String endDate = reportsView.getTxtEndDate().getText().trim();
             String report = dataAdapter.sortReport(startDate, endDate, "Date");
-            reportsView.getTxtReportField().setText(report);*/
+            reportsView.getTxtReportField().setText(report);
         }
         else if (e.getSource() == reportsView.getBtnSortPrice())
         {
-            /*String startDate = reportsView.getTxtStartDate().getText().trim();
+            String startDate = reportsView.getTxtStartDate().getText().trim();
             String endDate = reportsView.getTxtEndDate().getText().trim();
             String report = dataAdapter.sortReport(startDate, endDate, "Amount");
-            reportsView.getTxtReportField().setText(report);*/
+            reportsView.getTxtReportField().setText(report);
         }   
         else if (e.getSource() == reportsView.getBtnSortId())
         {
-            /*String startDate = reportsView.getTxtStartDate().getText().trim();
+            String startDate = reportsView.getTxtStartDate().getText().trim();
             String endDate = reportsView.getTxtEndDate().getText().trim();
-            String report = dataAdapter.sortReport(startDate, endDate, "OrderID");
-            reportsView.getTxtReportField().setText(report);*/
+            String report = dataAdapter.loadReport(startDate, endDate);
+            reportsView.getTxtReportField().setText(report);
         }
     }
 }

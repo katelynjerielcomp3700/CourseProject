@@ -2,6 +2,8 @@ import java.sql.*;
 import java.util.Date;
 import java.time.format.DateTimeFormatter;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class DataAdapter {
     private Connection connection;
@@ -254,6 +256,66 @@ public class DataAdapter {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public String sortReport(String startDate, String endDate, String sortOption) {
+        try {
+            ArrayList<String> al = new ArrayList<String>();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Orders WHERE Date >= ? AND Date <= ?");
+            statement.setString(1, startDate);
+            statement.setString(2, endDate);
+            ResultSet resultSet = statement.executeQuery();
+            String reportString = "";
+            double total = 0;
+            while (resultSet.next()) {
+                total += resultSet.getDouble("Amount");
+                if (sortOption.compareTo("Amount") == 0)
+                {
+                  String toAdd = Double.toString(resultSet.getDouble("Amount")) + ","
+                     + Integer.toString(resultSet.getInt("OrderID")) + ","
+                     + resultSet.getString("Date");
+                  al.add(toAdd);
+                }
+                else if (sortOption.compareTo("Date") == 0)
+                {
+                  String toAdd = resultSet.getString("Date") + ","
+                     + Integer.toString(resultSet.getInt("OrderID")) + ","
+                     + Double.toString(resultSet.getDouble("Amount"));
+                  al.add(toAdd);
+                }
+            }
+            Collections.sort(al);
+            if (sortOption.compareTo("Amount") == 0)
+            {
+               reportString = "Amount\t\tOrderID\t\tDate\n";
+               for (String s : al) {
+                   reportString += s.substring(0, s.indexOf(','));
+                   s = s.substring(s.indexOf(',') + 1, s.length());
+                   reportString += "\t\t" + s.substring(0, s.indexOf(','));
+                   s = s.substring(s.indexOf(',') + 1, s.length());
+                   reportString += "\t\t" + s.substring(0, s.length()) + "\n";
+               }
+            }
+            else if (sortOption.compareTo("Date") == 0)
+            {
+               reportString = "Date\t\tOrderID\t\tAmount\n";
+               for (String s : al) {
+                   reportString += s.substring(0, s.indexOf(','));
+                   s = s.substring(s.indexOf(',') + 1, s.length());
+                   reportString += "\t\t" + s.substring(0, s.indexOf(','));
+                   s = s.substring(s.indexOf(',') + 1, s.length());
+                   reportString += "\t\t" + s.substring(0, s.length()) + "\n";
+               }
+            }
+            reportString += "\nTotal Monthly Revenue:\t$" + df.format(total);
+            resultSet.close();
+            statement.close();
+            return reportString;
+        } catch (SQLException e) {
+            System.out.println("Database access error!");
+            e.printStackTrace();
+        }
+        return "";
     }
     
     public String loadReport(String startDate, String endDate) {
