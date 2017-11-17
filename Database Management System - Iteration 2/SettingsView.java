@@ -62,6 +62,7 @@ public class SettingsView extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 dataAdapter.changePass(String.valueOf(txtOldPass.getPassword()), String.valueOf(txtNewPass.getPassword()));
                 panelPassChange.setVisible(false);
+                JOptionPane.showMessageDialog(null, "Password successfully changed!");
             }
         });
     }

@@ -211,12 +211,13 @@ public class DataAdapter {
                 statement.setInt(4, user.getManagerStatus());
             }
             else { // this product does not exist, use insert into
-                statement = connection.prepareStatement("INSERT INTO User VALUES (?, ?, ?, ?, ?)");
+                statement = connection.prepareStatement("INSERT INTO User VALUES (?, ?, ?, ?, ?, ?)");
                 statement.setInt(1, user.getUserID());
                 statement.setString(2, user.getUserName());
                 statement.setString(3, user.getPassword());
                 statement.setString(4, user.getDisplayName());
                 statement.setInt(5, user.getManagerStatus());
+                statement.setString(6, "default.jpg");
             }
             statement.execute();
 
@@ -293,6 +294,48 @@ public class DataAdapter {
                 statement.setString(1, newPassword);
                 statement.setInt(2, userID);
                 statement.setString(3, oldPassword);
+                statement.execute();
+                resultSet.close();
+                statement.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("Database access error!");
+            e.printStackTrace();
+        }
+    }
+    
+    public String retrieveImage() {
+        User currentUser = app.getCurrentUser();
+        int userID = currentUser.getUserID();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM User WHERE UserID = ?");
+            statement.setInt(1, userID);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                String imageReturn = resultSet.getString("PictureName");
+                statement.execute();
+                resultSet.close();
+                statement.close();
+                return imageReturn;
+            }
+        } catch (SQLException e) {
+            System.out.println("Database access error!");
+            e.printStackTrace();
+        }
+        return "default.jpg";
+    }
+    
+    public void changePicture(String imageLink) {
+        User currentUser = app.getCurrentUser();
+        int userID = currentUser.getUserID();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM User WHERE UserID = ?");
+            statement.setInt(1, userID);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                statement = connection.prepareStatement("UPDATE User SET PictureName = ? WHERE UserID = ?");
+                statement.setString(1, imageLink);
+                statement.setInt(2, userID);
                 statement.execute();
                 resultSet.close();
                 statement.close();

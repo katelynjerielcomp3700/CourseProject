@@ -4,6 +4,7 @@ public class User {
    private String password;
    private String displayName;
    private int isManager;
+   private String pictureName;
    
    public int getUserID() {
       return userID;
@@ -43,5 +44,13 @@ public class User {
    
    public void setManagerStatus(int isManager) {
       this.isManager = isManager;
+   }
+   
+   public String getPictureName() {
+      return pictureName;
+   }
+   
+   public void setPictureName(String pictureName) {
+      this.pictureName = pictureName;
    }
 }

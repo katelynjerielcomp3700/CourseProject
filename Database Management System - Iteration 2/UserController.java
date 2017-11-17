@@ -87,7 +87,6 @@ public class UserController implements ActionListener {
             return;
         }
 
-        // Done all validations! Make an object for this product!
         User user = new User();
         user.setUserID(userID);
         user.setUserName(userName);
@@ -95,7 +94,6 @@ public class UserController implements ActionListener {
         user.setPassword(password);
         user.setManagerStatus(managerStatus);
 
-        // Store the product to the database
         dataAdapter.saveUser(user);
    }
    

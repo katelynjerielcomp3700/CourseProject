@@ -20,6 +20,7 @@ public class Application {
     private LoginController loginController;
     private UserController userController;
     private ReportsController reportsController;
+    private PicturesController picturesController;
     //Miscellaneous
     private Connection connection;
     private User currentUser;
@@ -50,7 +51,7 @@ public class Application {
         dataAdapter = new DataAdapter(connection, this);
 
         //Creates the various View classes
-        mainScreen = new MainScreen();
+        mainScreen = new MainScreen(this);
         loginScreen = new LoginScreen();
         managerView = new ManagerView();
         productView = new ProductView();
@@ -65,6 +66,7 @@ public class Application {
         checkoutController = new CheckoutController(checkoutView, dataAdapter);
         userController = new UserController(userView, dataAdapter);
         reportsController = new ReportsController(reportsView, dataAdapter);
+        picturesController = new PicturesController(picturesView, dataAdapter);
     }
     
     public Connection getConnection() {

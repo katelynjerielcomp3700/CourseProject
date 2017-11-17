@@ -4,12 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainScreen extends JFrame {
-
+    private Application app;
     private JButton btnCheckout = new JButton("Checkout");
     private JButton btnSettings = new JButton("Update Profile");
     private JButton btnManager = new JButton("Manager Features");
 
-    public MainScreen() {
+    public MainScreen(Application app) {
+        this.app = app;
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(600, 500);
@@ -42,7 +43,10 @@ public class MainScreen extends JFrame {
         
         btnManager.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Application.getInstance().getManagerView().setVisible(true);
+                if (app.getCurrentUser().getManagerStatus() == 1)
+                  Application.getInstance().getManagerView().setVisible(true);
+                else
+                  JOptionPane.showMessageDialog(null, "You must be manager to access this features");
             }
         });
         
