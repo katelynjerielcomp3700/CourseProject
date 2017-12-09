@@ -165,4 +165,53 @@ public class DataAdapter {
             e.printStackTrace();
         }
     }
+    
+    public User loadUser(String userName, String password) {
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM User WHERE UserName = ? AND Password = ?");
+            statement.setString(1, userName);
+            statement.setString(2, password);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                User user = new User();
+                user.setUserID(resultSet.getInt("UserID"));
+                user.setUserName(resultSet.getString("UserName"));
+                user.setPassword(resultSet.getString("Password"));
+                user.setDisplayName(resultSet.getString("DisplayName"));
+                user.setManagerStatus(resultSet.getInt("IsManager"));
+                resultSet.close();
+                statement.close();
+
+                return user;
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Database access error!");
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public String loadReport(String startDate, String endDate) {
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Orders WHERE Date >= ? AND Date <= ?");
+            statement.setString(1, startDate);
+            statement.setString(2, endDate);
+            ResultSet resultSet = statement.executeQuery();
+            String reportString = "";
+            while (resultSet.next()) {
+                reportString += Integer.toString(resultSet.getInt("OrderID"))
+                     + "\t" + Double.toString(resultSet.getDouble("Amount"))
+                     + "\t" + resultSet.getString("Date") + "\n";
+            }
+            resultSet.close();
+            statement.close();
+            System.out.println(reportString);
+            return reportString;
+        } catch (SQLException e) {
+            System.out.println("Database access error!");
+            e.printStackTrace();
+        }
+        return "";
+    }
 }
