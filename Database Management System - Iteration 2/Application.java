@@ -20,6 +20,10 @@ public class Application {
     private LoginController loginController;
     private UserController userController;
     private ReportsController reportsController;
+<<<<<<< HEAD
+=======
+    private PicturesController picturesController;
+>>>>>>> da6291cf0ffdc5ffc13f30fcea53a7aea06a242f
     //Miscellaneous
     private Connection connection;
     private User currentUser;
@@ -47,10 +51,17 @@ public class Application {
         }
 
         //Creates data adapter
+<<<<<<< HEAD
         dataAdapter = new DataAdapter(connection);
 
         //Creates the various View classes
         mainScreen = new MainScreen();
+=======
+        dataAdapter = new DataAdapter(connection, this);
+
+        //Creates the various View classes
+        mainScreen = new MainScreen(this);
+>>>>>>> da6291cf0ffdc5ffc13f30fcea53a7aea06a242f
         loginScreen = new LoginScreen();
         managerView = new ManagerView();
         productView = new ProductView();
@@ -65,6 +76,10 @@ public class Application {
         checkoutController = new CheckoutController(checkoutView, dataAdapter);
         userController = new UserController(userView, dataAdapter);
         reportsController = new ReportsController(reportsView, dataAdapter);
+<<<<<<< HEAD
+=======
+        picturesController = new PicturesController(picturesView, dataAdapter);
+>>>>>>> da6291cf0ffdc5ffc13f30fcea53a7aea06a242f
     }
     
     public Connection getConnection() {
@@ -125,6 +140,13 @@ public class Application {
         return dataAdapter;
     }
     
+<<<<<<< HEAD
+=======
+    public User getCurrentUser() {
+        return currentUser;
+    }
+    
+>>>>>>> da6291cf0ffdc5ffc13f30fcea53a7aea06a242f
     public void setCurrentUser(User user) {
         this.currentUser = user;
     }

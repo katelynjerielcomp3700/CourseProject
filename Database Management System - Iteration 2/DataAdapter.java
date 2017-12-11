@@ -2,6 +2,7 @@ import java.sql.*;
 import java.util.Date;
 import java.time.format.DateTimeFormatter;
 import java.text.DecimalFormat;
+<<<<<<< HEAD
 
 public class DataAdapter {
     private Connection connection;
@@ -10,6 +11,20 @@ public class DataAdapter {
 
     public DataAdapter(Connection connection) {
         this.connection = connection;
+=======
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class DataAdapter {
+    private Connection connection;
+    private Application app;
+    private DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+    DecimalFormat df = new DecimalFormat("#.00"); 
+
+    public DataAdapter(Connection connection, Application app) {
+        this.connection = connection;
+        this.app = app;
+>>>>>>> da6291cf0ffdc5ffc13f30fcea53a7aea06a242f
     }
     
     public String getProductName(int id) {
@@ -209,12 +224,20 @@ public class DataAdapter {
                 statement.setInt(4, user.getManagerStatus());
             }
             else { // this product does not exist, use insert into
+<<<<<<< HEAD
                 statement = connection.prepareStatement("INSERT INTO User VALUES (?, ?, ?, ?, ?)");
+=======
+                statement = connection.prepareStatement("INSERT INTO User VALUES (?, ?, ?, ?, ?, ?)");
+>>>>>>> da6291cf0ffdc5ffc13f30fcea53a7aea06a242f
                 statement.setInt(1, user.getUserID());
                 statement.setString(2, user.getUserName());
                 statement.setString(3, user.getPassword());
                 statement.setString(4, user.getDisplayName());
                 statement.setInt(5, user.getManagerStatus());
+<<<<<<< HEAD
+=======
+                statement.setString(6, "default.jpg");
+>>>>>>> da6291cf0ffdc5ffc13f30fcea53a7aea06a242f
             }
             statement.execute();
 
@@ -253,6 +276,69 @@ public class DataAdapter {
         return null;
     }
     
+<<<<<<< HEAD
+=======
+    public String sortReport(String startDate, String endDate, String sortOption) {
+        try {
+            ArrayList<String> al = new ArrayList<String>();
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM Orders WHERE Date >= ? AND Date <= ?");
+            statement.setString(1, startDate);
+            statement.setString(2, endDate);
+            ResultSet resultSet = statement.executeQuery();
+            String reportString = "";
+            double total = 0;
+            while (resultSet.next()) {
+                total += resultSet.getDouble("Amount");
+                if (sortOption.compareTo("Amount") == 0)
+                {
+                  String toAdd = Double.toString(resultSet.getDouble("Amount")) + ","
+                     + Integer.toString(resultSet.getInt("OrderID")) + ","
+                     + resultSet.getString("Date");
+                  al.add(toAdd);
+                }
+                else if (sortOption.compareTo("Date") == 0)
+                {
+                  String toAdd = resultSet.getString("Date") + ","
+                     + Integer.toString(resultSet.getInt("OrderID")) + ","
+                     + Double.toString(resultSet.getDouble("Amount"));
+                  al.add(toAdd);
+                }
+            }
+            Collections.sort(al);
+            if (sortOption.compareTo("Amount") == 0)
+            {
+               reportString = "Amount\t\tOrderID\t\tDate\n";
+               for (String s : al) {
+                   reportString += s.substring(0, s.indexOf(','));
+                   s = s.substring(s.indexOf(',') + 1, s.length());
+                   reportString += "\t\t" + s.substring(0, s.indexOf(','));
+                   s = s.substring(s.indexOf(',') + 1, s.length());
+                   reportString += "\t\t" + s.substring(0, s.length()) + "\n";
+               }
+            }
+            else if (sortOption.compareTo("Date") == 0)
+            {
+               reportString = "Date\t\tOrderID\t\tAmount\n";
+               for (String s : al) {
+                   reportString += s.substring(0, s.indexOf(','));
+                   s = s.substring(s.indexOf(',') + 1, s.length());
+                   reportString += "\t\t" + s.substring(0, s.indexOf(','));
+                   s = s.substring(s.indexOf(',') + 1, s.length());
+                   reportString += "\t\t" + s.substring(0, s.length()) + "\n";
+               }
+            }
+            reportString += "\nTotal Monthly Revenue:\t$" + df.format(total);
+            resultSet.close();
+            statement.close();
+            return reportString;
+        } catch (SQLException e) {
+            System.out.println("Database access error!");
+            e.printStackTrace();
+        }
+        return "";
+    }
+    
+>>>>>>> da6291cf0ffdc5ffc13f30fcea53a7aea06a242f
     public String loadReport(String startDate, String endDate) {
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM Orders WHERE Date >= ? AND Date <= ?");
@@ -279,6 +365,7 @@ public class DataAdapter {
     }
     
     public void changePass(String oldPassword, String newPassword) {
+<<<<<<< HEAD
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM User WHERE Password = ?");
             statement.setString(1, oldPassword);
@@ -287,6 +374,62 @@ public class DataAdapter {
                 statement = connection.prepareStatement("UPDATE User SET Password = ? WHERE Password = ?");
                 statement.setString(1, newPassword);
                 statement.setString(2, oldPassword);
+=======
+        User currentUser = app.getCurrentUser();
+        int userID = currentUser.getUserID();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM User WHERE UserID = ? AND Password = ?");
+            statement.setInt(1, userID);
+            statement.setString(2, oldPassword);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                statement = connection.prepareStatement("UPDATE User SET Password = ? WHERE UserID = ? AND Password = ?");
+                statement.setString(1, newPassword);
+                statement.setInt(2, userID);
+                statement.setString(3, oldPassword);
+                statement.execute();
+                resultSet.close();
+                statement.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("Database access error!");
+            e.printStackTrace();
+        }
+    }
+    
+    public String retrieveImage() {
+        User currentUser = app.getCurrentUser();
+        int userID = currentUser.getUserID();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM User WHERE UserID = ?");
+            statement.setInt(1, userID);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                String imageReturn = resultSet.getString("PictureName");
+                statement.execute();
+                resultSet.close();
+                statement.close();
+                return imageReturn;
+            }
+        } catch (SQLException e) {
+            System.out.println("Database access error!");
+            e.printStackTrace();
+        }
+        return "default.jpg";
+    }
+    
+    public void changePicture(String imageLink) {
+        User currentUser = app.getCurrentUser();
+        int userID = currentUser.getUserID();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM User WHERE UserID = ?");
+            statement.setInt(1, userID);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                statement = connection.prepareStatement("UPDATE User SET PictureName = ? WHERE UserID = ?");
+                statement.setString(1, imageLink);
+                statement.setInt(2, userID);
+>>>>>>> da6291cf0ffdc5ffc13f30fcea53a7aea06a242f
                 statement.execute();
                 resultSet.close();
                 statement.close();
